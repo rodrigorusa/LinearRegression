@@ -13,41 +13,14 @@ def dummy_coding(dataset):
     print('dummy_coding')
 
     # Categorical variables
-    cut = {
-        "Fair": 1,
-        "Good": 2,
-        "Very Good": 3,
-        "Premium": 4,
-        "Ideal": 5
-    }
-    color = {
-        "J": 1,
-        "I": 2,
-        "H": 3,
-        "G": 4,
-        "F": 5,
-        "E": 6,
-        "D": 7
-    }
-    clarity = {
-        "I3": 1,
-        "I2": 2,
-        "I1": 3,
-        "SI2": 4,
-        "SI1": 5,
-        "VS2": 6,
-        "VS1": 7,
-        "VVS2": 8,
-        "VVS1": 9,
-        "IF": 10,
-        "FL": 11
-    }
+    cut = ['Fair', 'Good', 'Very Good', 'Premium', 'Ideal']
+    color = ['J', 'I', 'H', 'G', 'F', 'E', 'D']
+    clarity = ['I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF']
 
     for i in range(0, dataset.shape[0]):
-        print(i)
-        dataset.iloc[i, 1] = cut.get(dataset.iloc[i, 1], 0)
-        dataset.iloc[i, 2] = color.get(dataset.iloc[i, 2], 0)
-        dataset.iloc[i, 3] = clarity.get(dataset.iloc[i, 3], 0)
+        dataset.iloc[i, 1] = cut.index(dataset.iloc[i, 1])
+        dataset.iloc[i, 2] = color.index(dataset.iloc[i, 2])
+        dataset.iloc[i, 3] = clarity.index(dataset.iloc[i, 3])
 
 
 def normalize(dataset):
