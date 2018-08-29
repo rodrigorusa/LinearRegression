@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
+from reader.csv_reader import DiamondCsvReader
+
 parser = argparse.ArgumentParser(description='Linear Regression.')
 parser.add_argument('-training', dest='training_path')
 
@@ -11,14 +13,41 @@ def dummy_coding(dataset):
     print('dummy_coding')
 
     # Categorical variables
-    cut = ['Fair', 'Good', 'Very Good', 'Premium', 'Ideal']
-    color = ['J', 'I', 'H', 'G', 'F', 'E', 'D']
-    clarity = ['I1', 'SI2', 'SI1', 'VS2', 'VS1', 'VVS2', 'VVS1', 'IF']
+    cut = {
+        "Fair": 1,
+        "Good": 2,
+        "Very Good": 3,
+        "Premium": 4,
+        "Ideal": 5
+    }
+    color = {
+        "J": 1,
+        "I": 2,
+        "H": 3,
+        "G": 4,
+        "F": 5,
+        "E": 6,
+        "D": 7
+    }
+    clarity = {
+        "I3": 1,
+        "I2": 2,
+        "I1": 3,
+        "SI2": 4,
+        "SI1": 5,
+        "VS2": 6,
+        "VS1": 7,
+        "VVS2": 8,
+        "VVS1": 9,
+        "IF": 10,
+        "FL": 11
+    }
 
     for i in range(0, dataset.shape[0]):
-        dataset.iloc[i, 1] = cut.index(dataset.iloc[i, 1])
-        dataset.iloc[i, 2] = color.index(dataset.iloc[i, 2])
-        dataset.iloc[i, 3] = clarity.index(dataset.iloc[i, 3])
+        print(i)
+        dataset.iloc[i, 1] = cut.get(dataset.iloc[i, 1], 0)
+        dataset.iloc[i, 2] = color.get(dataset.iloc[i, 2], 0)
+        dataset.iloc[i, 3] = clarity.get(dataset.iloc[i, 3], 0)
 
 
 def normalize(dataset):
@@ -40,7 +69,7 @@ def pre_processing(dataset):
     print('pre-processing')
 
     # Coding categorical/nominal variables
-    dummy_coding(dataset)
+    #dummy_coding(dataset)
 
     # Normalize data set
     norm = normalize(dataset)
@@ -109,12 +138,25 @@ def linear_regressor(x, y, iterations, learning_rate):
 
     return coefficients[0, :], error, iter-1
 
+def normal_equation(x, y):
+    # Define x0 = 1
+    ones = np.ones((x.shape[0], 1))
+    x = np.concatenate((ones, x), axis=1)
+
+    coefficients = np.linalg.inv(x.T.dot(x)).dot(x.T).dot(y)
+
+    print('coefficients:', coefficients)
+    print('minimum cost:', compute_error(coefficients, x, y))
+
+    return coefficients
+
 
 def main():
     args = parser.parse_args()
 
     # Load training set
-    df_train = pd.read_csv(args.training_path)
+    df_train = DiamondCsvReader.getDataFrame(args.training_path)
+    df_train_2 = pd.read_csv(args.training_path)
 
     # Split training data in training(80%) and validation(20%)
     validation_set = df_train.sample(frac=0.2, random_state=1)
@@ -136,8 +178,12 @@ def main():
 
     # Gradient descent
     coefficients, error, iter_stop = linear_regressor(training_set_x, training_set_y.values, 1000, 0.1)
+    #coefficients = normal_equation(training_set_x, training_set_y.values)
+
+    #training_set_y.values.sort()
 
     plt.plot(error[0:iter_stop])
+    #plt.plot(training_set_y.values)
     plt.xlabel('Iteration')
     plt.ylabel('Cost Function')
     plt.show()

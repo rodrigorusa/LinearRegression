@@ -1,5 +1,4 @@
 class Diamond:
-    id = 0
     carat = 0
     cut = 0
     color = 0
@@ -53,8 +52,7 @@ class Diamond:
 
         return switchClarity.get(clarity, 0)
 
-    def __init__(self, id, carat, cut, color, clarity, depth, table, x, y, z, price):
-        self.id = int(id)
+    def __init__(self, carat, cut, color, clarity, depth, table, x, y, z, price):
         self.carat = float(carat)
         self.cut = self.defineCutValue(cut)
         self.color = self.defineColorValue(color)
