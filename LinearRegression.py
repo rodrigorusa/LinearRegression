@@ -1,7 +1,9 @@
 import argparse
 
 import matplotlib.pyplot as plt
+import matplotlib.cm as cm
 import numpy as np
+import seaborn as sns
 
 from methods.linear_regressor import LinearRegressor
 from methods.normal_equation import NormalEquation
@@ -36,12 +38,20 @@ def pre_processing(dataset):
     return norm
 
 def init_dataset(args):
+    pow_array = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+
     # Load training set
-    df_train = DiamondCsvReader.getDataFrame(args.training_path)
+    df_train = DiamondCsvReader.getDataFrame(args.training_path, power=pow_array)
+
 
     # Split training data in training(80%) and validation(20%)
     validation_set = df_train.sample(frac=0.2, random_state=1)
     training_set = df_train.drop(validation_set.index)
+
+    corr = training_set.corr()
+    f, ax = plt.subplots(figsize=(9, 9))
+    sns.heatmap(data=corr, annot=True, ax=ax)
+    plt.show()
 
     print('Training set dimensions:', training_set.shape)
     print('Validation set dimensions:', validation_set.shape)
@@ -73,7 +83,27 @@ def scikit_regressor(training_set_x, training_set_y):
     iterations = int(input('Set iterations: ')) or 1000
     learning_rate = float(input('Set learning rate: ')) or 0.1
 
-    coefficients = ScikitRegressor.scikit_regressor(training_set_x, training_set_y, iterations, learning_rate)
+    model = ScikitRegressor.scikit_regressor(training_set_x, training_set_y, iterations, learning_rate)
+
+    colors = iter(cm.rainbow(np.linspace(0, 1, 9)))
+    plt.scatter(training_set_x.T[0], training_set_y.values, color=next(colors))
+    #plt.show()
+    plt.scatter(training_set_x.T[1], training_set_y.values, color=next(colors))
+    #plt.show()
+    plt.scatter(training_set_x.T[2], training_set_y.values, color=next(colors))
+    #plt.show()
+    plt.scatter(training_set_x.T[3], training_set_y.values, color=next(colors))
+    #plt.show()
+    plt.scatter(training_set_x.T[4], training_set_y.values, color=next(colors))
+    #plt.show()
+    plt.scatter(training_set_x.T[5], training_set_y.values, color=next(colors))
+    #plt.show()
+    plt.scatter(training_set_x.T[6], training_set_y.values, color=next(colors))
+    #plt.show()
+    plt.scatter(training_set_x.T[7], training_set_y.values, color=next(colors))
+    #plt.show()
+    plt.scatter(training_set_x.T[8], training_set_y.values, color=next(colors))
+    plt.show()
 
 
 def normal_equation(training_set_x, training_set_y):

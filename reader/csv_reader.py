@@ -19,7 +19,7 @@ class DiamondCsvReader:
         return diamondList
 
     @staticmethod
-    def getDataFrame(fileName):
+    def getDataFrame(fileName, power = [1, 1, 1, 1, 1, 1, 1, 1, 1]):
         diamondList = DiamondCsvReader.readCsv(fileName)
 
         dictionary = {
@@ -38,15 +38,15 @@ class DiamondCsvReader:
         columns = ['carat', 'cut', 'color', 'clarity', 'x', 'y', 'z', 'depth', 'table', 'price']
 
         for diamond in diamondList:
-            dictionary['carat'].append(diamond.carat)
-            dictionary['cut'].append(diamond.cut)
-            dictionary['color'].append(diamond.color)
-            dictionary['clarity'].append(diamond.clarity)
-            dictionary['x'].append(diamond.x)
-            dictionary['y'].append(diamond.y)
-            dictionary['z'].append(diamond.z)
-            dictionary['depth'].append(diamond.depth)
-            dictionary['table'].append(diamond.table)
+            dictionary['carat'].append(diamond.carat**power[0])
+            dictionary['cut'].append(diamond.cut**power[1])
+            dictionary['color'].append(diamond.color**power[2])
+            dictionary['clarity'].append(diamond.clarity**power[3])
+            dictionary['x'].append(diamond.x**power[4])
+            dictionary['y'].append(diamond.y**power[5])
+            dictionary['z'].append(diamond.z**power[6])
+            dictionary['depth'].append(diamond.depth**power[7])
+            dictionary['table'].append(diamond.table**power[8])
             dictionary['price'].append(diamond.price)
 
         return pd.DataFrame(dictionary, columns=columns)
