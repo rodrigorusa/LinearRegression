@@ -5,14 +5,18 @@ from methods.general import CostCalculus
 
 class NormalEquation:
     @staticmethod
-    def normal_equation(x, y):
+    def normal_equation(train_x, train_y, val_x, val_y):
         # Define x0 = 1
-        ones = np.ones((x.shape[0], 1))
-        x = np.concatenate((ones, x), axis=1)
+        ones = np.ones((train_x.shape[0], 1))
+        train_x = np.concatenate((ones, train_x), axis=1)
+        val_x = np.concatenate((ones[0:val_x.shape[0]], val_x), axis=1)
 
-        coefficients = np.linalg.inv(x.T.dot(x)).dot(x.T).dot(y)
+        # Find parameters
+        params = np.linalg.inv(train_x.T.dot(train_x)).dot(train_x.T).dot(train_y)
 
-        print('coefficients:', coefficients)
-        print('minimum cost:', CostCalculus.compute_error(coefficients, x, y))
+        # Compute error
+        params = np.array([params, ] * train_x.shape[0])
+        train_error = CostCalculus.compute_error(params, train_x, train_y)
+        val_error = CostCalculus.compute_error(params[0:val_x.shape[0], :], val_x, val_y)
 
-        return coefficients
+        return params[0, :], train_error, val_error

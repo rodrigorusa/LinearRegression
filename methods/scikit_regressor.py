@@ -1,18 +1,22 @@
 from sklearn import linear_model
-
-from methods.general import CostCalculus
+from sklearn.metrics import mean_squared_error
 
 
 class ScikitRegressor:
     @staticmethod
-    def scikit_regressor(x, y, iterations, learning_rate):
-        model = linear_model.SGDRegressor(max_iter=iterations, eta0=learning_rate)
-        model.fit(x, y)
+    def regressor(train_x, train_y, val_x, val_y, max_iterations, learning_rate, tolerance):
 
-        coefficients = model.coef_
+        model = linear_model.SGDRegressor(max_iter=max_iterations, eta0=learning_rate, tol=tolerance)
 
-        print('coefficients:', coefficients)
-        print('cost function: ', CostCalculus.compute_error(coefficients, x, y))
-        print('R^2: ', model.score(x, y))
+        # Fit model
+        model.fit(train_x, train_y)
 
-        return model
+        # Predict
+        train_y_pred = model.predict(train_x)
+        val_y_pred = model.predict(val_x)
+
+        # Compute error
+        train_error = mean_squared_error(train_y_pred, train_y)
+        val_error = mean_squared_error(val_y_pred, val_y)
+
+        return model, train_error, val_error

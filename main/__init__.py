@@ -1,11 +1,12 @@
 from reader.csv_reader import DiamondCsvReader
 
+
 def main():
-    diamondList = DiamondCsvReader.readCsv('../diamonds-test.csv')
+    diamond_list = DiamondCsvReader.read_csv('../diamonds-test.csv')
 
-    DiamondCsvReader.getDataFrame('../diamonds-test.csv')
+    DiamondCsvReader.get_data_frame('../diamonds-test.csv')
 
-    for diamond in diamondList:
+    for diamond in diamond_list:
         print(diamond, end='\n', flush=True)
 
 

@@ -10,9 +10,9 @@ class Diamond:
     z = 0
     price = 0
 
-
-    def defineCutValue(self, cut):
-        switchCut = {
+    @staticmethod
+    def define_cut_value(cut):
+        switch_cut = {
             "Fair": 1,
             "Good": 2,
             "Very Good": 3,
@@ -20,10 +20,11 @@ class Diamond:
             "Ideal": 5
         }
 
-        return switchCut.get(cut, 0)
+        return switch_cut.get(cut, 0)
 
-    def defineColorValue(self, color):
-        switchColor = {
+    @staticmethod
+    def define_color_value(color):
+        switch_color = {
             "J": 1,
             "I": 2,
             "H": 3,
@@ -33,30 +34,28 @@ class Diamond:
             "D": 7
         }
 
-        return switchColor.get(color, 0)
+        return switch_color.get(color, 0)
 
-    def defineClarityValue(self, clarity):
-        switchClarity = {
-            "I3": 1,
-            "I2": 2,
-            "I1": 3,
-            "SI2": 4,
-            "SI1": 5,
-            "VS2": 6,
-            "VS1": 7,
-            "VVS2": 8,
-            "VVS1": 9,
-            "IF": 10,
-            "FL": 11
+    @staticmethod
+    def define_clarity_value(clarity):
+        switch_clarity = {
+            "I1": 1,
+            "SI2": 2,
+            "SI1": 3,
+            "VS2": 4,
+            "VS1": 5,
+            "VVS2": 6,
+            "VVS1": 7,
+            "IF": 8
         }
 
-        return switchClarity.get(clarity, 0)
+        return switch_clarity.get(clarity, 0)
 
     def __init__(self, carat, cut, color, clarity, depth, table, x, y, z, price):
         self.carat = float(carat)
-        self.cut = self.defineCutValue(cut)
-        self.color = self.defineColorValue(color)
-        self.clarity = self.defineClarityValue(clarity)
+        self.cut = self.define_cut_value(cut)
+        self.color = self.define_color_value(color)
+        self.clarity = self.define_clarity_value(clarity)
         self.depth = float(depth)
         self.table = float(table)
         self.x = float(x)
@@ -66,6 +65,6 @@ class Diamond:
 
     def __repr__(self):
         return "carat: {0} cut: {1} color: {2} clarity: {3} depth: {4} table: {5} x: {6} y: {7} z: {8} price: {9}"\
-                .format(self.carat, self.cut, self.color, \
-                        self.clarity, self.depth, self.table, \
+                .format(self.carat, self.cut, self.color,
+                        self.clarity, self.depth, self.table,
                         self.x, self.y, self.z, self.price)
