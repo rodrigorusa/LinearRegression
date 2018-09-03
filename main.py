@@ -40,7 +40,7 @@ def data_visualization(x, y, titles):
     n = 3
     m = math.ceil(x.shape[1]/n)
 
-    fig, axs = plt.subplots(m, n, figsize=(15, 10))
+    fig, axs = plt.subplots(3, 3, figsize=(15, 10))
     k = 0
     for i in range(0, m):
         for j in range(0, n):
@@ -82,6 +82,10 @@ def init_dataset(args):
     # Split validation set in variables(x) and target(y)
     validation_set_x = validation_set.iloc[:, 0:validation_set.shape[1] - 1]
     validation_set_y = validation_set.iloc[:, -1]
+
+    # Unit test
+    #training_set_x = training_set_x.iloc[:, 0:1]
+    #validation_set_x = validation_set_x.iloc[:, 0:1]
 
     # Data pre-processing
     training_set_x, training_mean, training_std = normalize(training_set_x)

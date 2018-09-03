@@ -16,7 +16,7 @@ class NormalEquation:
 
         # Compute error
         params = np.array([params, ] * train_x.shape[0])
-        train_error = CostCalculus.compute_error(params, train_x, train_y)
-        val_error = CostCalculus.compute_error(params[0:val_x.shape[0], :], val_x, val_y)
+        train_error = CostCalculus.compute_error(params, train_x, train_y, axis=1)
+        val_error = CostCalculus.compute_error(params[0:val_x.shape[0], :], val_x, val_y, axis=1)
 
         return params[0, :], train_error, val_error
