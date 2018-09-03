@@ -51,3 +51,32 @@ class DiamondCsvReader:
             dictionary['price'].append(diamond.price)
 
         return pd.DataFrame(dictionary, columns=columns)
+
+    @staticmethod
+    def get_volume_data_frame(filename):
+        diamond_list = DiamondCsvReader.read_csv(filename)
+
+        dictionary = {
+            'carat': [],
+            'cut': [],
+            'color': [],
+            'clarity': [],
+            'volume': [],
+            'depth': [],
+            'table': [],
+            'price': []
+        }
+
+        columns = ['carat', 'cut', 'color', 'clarity', 'volume', 'depth', 'table', 'price']
+
+        for diamond in diamond_list:
+            dictionary['carat'].append(diamond.carat)
+            dictionary['cut'].append(diamond.cut)
+            dictionary['color'].append(diamond.color)
+            dictionary['clarity'].append(diamond.clarity)
+            dictionary['volume'].append(diamond.x*diamond.y*diamond.z)
+            dictionary['depth'].append(diamond.depth)
+            dictionary['table'].append(diamond.table)
+            dictionary['price'].append(diamond.price)
+
+        return pd.DataFrame(dictionary, columns=columns)

@@ -23,13 +23,15 @@ def str2bool(v):
 
 
 parser = argparse.ArgumentParser(description='Linear Regression.')
+parser.add_argument('-model', dest='model_type')
 parser.add_argument('-training', dest='training_path')
 parser.add_argument('-test', dest='test_path')
 parser.add_argument('-plot-data', dest='plot_data', type=str2bool, nargs='?')
 parser.add_argument('-plot-error', dest='plot_error', type=str2bool, nargs='?')
 
 FRAC_VALIDATION = 0.2
-POW_ARRAY = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+#POW_ARRAY = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+#POW_ARRAY = [1, 1, 1, 1, 1, 1, 1]
 
 
 def normalize(df, mean=None, std=None):
@@ -80,8 +82,21 @@ def data_correlation(df):
 
 def init_dataset(args):
 
-    # Load training set
-    df_train = DiamondCsvReader.get_data_frame(args.training_path)
+    if args.model_type == 'VOLUME':
+        print('Chosen model: VOLUME')
+        # Load training set
+        df_train = DiamondCsvReader.get_volume_data_frame(args.training_path)
+        # Load test set
+        test_set = DiamondCsvReader.get_volume_data_frame(args.test_path)
+        POW_ARRAY = [1, 1, 1, 1, 1, 1, 1]
+    else:
+        print('Chosen model: XYZ')
+        # Load training set
+        df_train = DiamondCsvReader.get_data_frame(args.training_path)
+        # Load test set
+        test_set = DiamondCsvReader.get_data_frame(args.test_path)
+        POW_ARRAY = [1, 1, 1, 1, 1, 1, 1, 1, 1]
+
 
     # Load test set
     test_set = DiamondCsvReader.get_data_frame(args.test_path)
@@ -174,7 +189,9 @@ def gradient_descent(args, train_set_x, train_set_y, val_set_x, val_set_y, test_
     print('Number of iterations: ', iter_stop)
     print('Coefficients (model): \n', params)
     print('Training Mean squared error: %.2f' % train_error[iter_stop])
+    print('Training R^2 score: ', r2_score(predict(params, train_set_x), train_set_y.values))
     print('Validation Mean squared error: %.2f' % val_error[iter_stop])
+    print('Validation R^2 score: ', r2_score(predict(params, val_set_x), val_set_y.values))
     print('Test R^2 score: ', r2_score(test_set_y, predict(params, test_set_x)))
 
     if args.plot_error:
@@ -224,7 +241,9 @@ def normal_equation(train_set_x, train_set_y, val_set_x, val_set_y, test_set_x, 
     print('\nNormal Equation:')
     print('Coefficients (model): \n', params)
     print('Training Mean squared error: %.2f' % train_error)
+    print('Training R^2 score: ', r2_score(predict(params, train_set_x), train_set_y.values))
     print('Validation Mean squared error: %.2f' % val_error)
+    print('Validation R^2 score: ', r2_score(predict(params, val_set_x), val_set_y.values))
     print('Test R^2 score: ', r2_score(test_set_y, predict(params, test_set_x)))
 
 def predict(model, x_values):
