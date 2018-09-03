@@ -30,8 +30,6 @@ parser.add_argument('-plot-data', dest='plot_data', type=str2bool, nargs='?')
 parser.add_argument('-plot-error', dest='plot_error', type=str2bool, nargs='?')
 
 FRAC_VALIDATION = 0.2
-#POW_ARRAY = [1, 1, 1, 1, 1, 1, 1, 1, 1]
-#POW_ARRAY = [1, 1, 1, 1, 1, 1, 1]
 
 
 def normalize(df, mean=None, std=None):
@@ -97,9 +95,6 @@ def init_dataset(args):
         test_set = DiamondCsvReader.get_data_frame(args.test_path)
         POW_ARRAY = [1, 1, 1, 1, 1, 1, 1, 1, 1]
 
-
-    # Load test set
-    test_set = DiamondCsvReader.get_data_frame(args.test_path)
 
     # Split training data in training and validation
     validation_set = df_train.sample(frac=FRAC_VALIDATION, random_state=1)
