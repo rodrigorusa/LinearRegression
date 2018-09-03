@@ -103,7 +103,7 @@ def init_dataset(args):
     return training_set_x, training_set_y, validation_set_x, validation_set_y
 
 
-def gradient_descent(train_set_x, train_set_y, val_set_x, val_set_y):
+def gradient_descent(train_set_x, train_set_y, val_set_x, val_set_y, type):
     val = input('Set maximum iterations (default: 1000): ')
     max_iterations = 1000
     if val != '':
@@ -117,10 +117,29 @@ def gradient_descent(train_set_x, train_set_y, val_set_x, val_set_y):
     if val != '':
         tolerance = float(val)
 
-    # Gradient descent
-    params, train_error, val_error, iter_stop = LinearRegressor.regressor(train_set_x, train_set_y.values, val_set_x,
-                                                                          val_set_y.values, max_iterations,
-                                                                          learning_rate, tolerance)
+    if type == 'Batch':
+        # Gradient descent
+        params, train_error, val_error, iter_stop = LinearRegressor.BGDRegressor(train_set_x, train_set_y.values,
+                                                                                 val_set_x, val_set_y.values,
+                                                                                 max_iterations, learning_rate,
+                                                                                 tolerance)
+    elif type == 'Stochastic':
+        # Gradient descent
+        params, train_error, val_error, iter_stop = LinearRegressor.SGDRegressor(train_set_x, train_set_y.values,
+                                                                                 val_set_x, val_set_y.values,
+                                                                                 max_iterations, learning_rate,
+                                                                                 tolerance)
+    else:
+        val = input('Set number of training examples (default: 10): ')
+        b = 10
+        if val != '':
+            b = float(val)
+
+        # Gradient descent
+        params, train_error, val_error, iter_stop = LinearRegressor.MBGDRegressor(train_set_x, train_set_y.values,
+                                                                                  val_set_x, val_set_y.values, b,
+                                                                                  max_iterations, learning_rate,
+                                                                                  tolerance)
 
     print('\nGradient Descent: ')
     print('Number of iterations: ', iter_stop)
@@ -182,18 +201,24 @@ def main():
     training_set_x, training_set_y, validation_set_x, validation_set_y = init_dataset(args)
 
     print('Choose your method:')
-    print('1 - Linear Regression with Gradient Descent')
-    print('2 - Linear Regression with Scikit SGDRegressor')
-    print('3 - Normal Equation')
+    print('1 - Linear Regression with Batch Gradient Descent')
+    print('2 - Linear Regression with Stochastic Gradient Descent')
+    print('3 - Linear Regression with Mini-Batch Gradient Descent')
+    print('4 - Linear Regression with Scikit SGDRegressor')
+    print('5 - Normal Equation')
     print('Anyone - Exit')
 
     opt = int(input('Option: ')) or 0
 
     if opt == 1:
-        gradient_descent(training_set_x, training_set_y, validation_set_x, validation_set_y)
+        gradient_descent(training_set_x, training_set_y, validation_set_x, validation_set_y, 'Batch')
     elif opt == 2:
-        scikit_regressor(training_set_x, training_set_y, validation_set_x, validation_set_y)
+        gradient_descent(training_set_x, training_set_y, validation_set_x, validation_set_y, 'Stochastic')
     elif opt == 3:
+        gradient_descent(training_set_x, training_set_y, validation_set_x, validation_set_y, 'Mini-Batch')
+    elif opt == 4:
+        scikit_regressor(training_set_x, training_set_y, validation_set_x, validation_set_y)
+    elif opt == 5:
         normal_equation(training_set_x, training_set_y, validation_set_x, validation_set_y)
 
 

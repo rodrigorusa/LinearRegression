@@ -6,7 +6,8 @@ class ScikitRegressor:
     @staticmethod
     def regressor(train_x, train_y, val_x, val_y, max_iterations, learning_rate, tolerance):
 
-        model = linear_model.SGDRegressor(max_iter=max_iterations, eta0=learning_rate, tol=tolerance)
+        model = linear_model.SGDRegressor(max_iter=max_iterations, learning_rate='constant', eta0=learning_rate,
+                                          tol=tolerance)
 
         # Fit model
         model.fit(train_x, train_y)
