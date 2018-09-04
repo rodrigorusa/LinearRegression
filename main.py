@@ -87,8 +87,29 @@ def init_dataset(args):
         # Load test set
         test_set = DiamondCsvReader.get_volume_data_frame(args.test_path)
         POW_ARRAY = [1, 1, 1, 1, 1, 1, 1]
+    elif args.model_type == 'NOMINAL':
+        print('Chosen model: NOMINAL')
+        # Load training set
+        df_train = DiamondCsvReader.get_nominal_data_frame(args.training_path)
+        # Load test set
+        test_set = DiamondCsvReader.get_nominal_data_frame(args.test_path)
+        POW_ARRAY = [1, 1, 1, 1, 1, 1, 1]
+    elif args.model_type == 'TWOFEATURES':
+        print('Chosen model: TWOFEATURES')
+        # Load training set
+        df_train = DiamondCsvReader.get_two_vars_data_frame(args.training_path)
+        # Load test set
+        test_set = DiamondCsvReader.get_two_vars_data_frame(args.test_path)
+        POW_ARRAY = [1, 1]
+    elif args.model_type == 'FOURFEATURES':
+        print('Chosen model: FOURFEATURES')
+        # Load training set
+        df_train = DiamondCsvReader.get_four_vars_data_frame(args.training_path)
+        # Load test set
+        test_set = DiamondCsvReader.get_four_vars_data_frame(args.test_path)
+        POW_ARRAY = [1, 1, 1, 1]
     else:
-        print('Chosen model: XYZ')
+        print('Chosen model: DEFAULT')
         # Load training set
         df_train = DiamondCsvReader.get_data_frame(args.training_path)
         # Load test set
