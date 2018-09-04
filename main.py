@@ -201,7 +201,7 @@ def gradient_descent(args, train_set_x, train_set_y, val_set_x, val_set_y, test_
                                                                                   max_iterations, learning_rate,
                                                                                   tolerance)
 
-    print('\nGradient Descent: ')
+    print('\n' + type + ' Gradient Descent: ')
     print('Number of iterations: ', iter_stop)
     print('Coefficients (model): \n', params)
     print('Training Mean squared error: %.2f' % train_error[iter_stop])
